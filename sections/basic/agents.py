@@ -23,7 +23,7 @@ from decouple import config
 
 #Set env variables
 os.environ["OPENAI_API_KEY"]=config("OPENAI_API_KEY")
-os.environ["TAVILY_API_KEY"]=config("TAVILY_API_KEY")
+# os.environ["TAVILY_API_KEY"]=config("TAVILY_API_KEY")
 tavily_client = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
 
 # os.environ["TAVILY_API_KEY"]=getpass.getpass("Enter your Tavily API key: ")
