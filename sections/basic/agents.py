@@ -23,7 +23,7 @@ from decouple import config
 
 #Set env variables
 os.environ["OPENAI_API_KEY"]=config("OPENAI_API_KEY")
-# os.environ["TAVILY_API_KEY"]=config("TAVILY_API_KEY")
+os.environ["TAVILY_API_KEY"]=config("TAVILY_API_KEY")
 tavily_client = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
 
 # os.environ["TAVILY_API_KEY"]=getpass.getpass("Enter your Tavily API key: ")
@@ -36,7 +36,7 @@ tavily_client = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
 # Instantiate the TavilySearchResults class with your Tavily API key
 # tavily_tool = TavilySearchResults(max_results=5, api_key=os.getenv("TAVILY_API_KEY"))
 #Intialize model
-llm= ChatOpenAI(temperature=0,model="gpt-4-turbo-preview")
+llm= ChatOpenAI(temperature=0,model="gpt-4-turbo-preview") #verbose=true
 
 #Define custom tools to use
 @tool("process_search_tool",return_direct=False)
@@ -58,7 +58,7 @@ def process_search_tool(url:str)->str:
 def internet_search_tool(query:str)->str:
     """Search user query on the internet using TavilyAPI."""
     try:
-        response = tavily_client.search(query=query, max_results=5)#["results"]
+        response = tavily_client.qna_search(query=query, max_results=5)#["results"]
         return response if response else "No results found"
     except requests.exceptions.HTTPError as e:
         return f"HTTP Error: {e}"
