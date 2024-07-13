@@ -132,7 +132,7 @@ function_def={
         "required":["next"]
         }    
     }
-
+# lookup logging in python 
 prompt = ChatPromptTemplate.from_messages(
     [
         ("system", system_prompt),
