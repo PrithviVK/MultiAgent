@@ -1,2 +1,3 @@
 sections/*.env
 venv/
+sections/__pycache__/

@@ -6,7 +6,7 @@ function createGradioAnimation() {
     container.style.textAlign = 'center';
     container.style.marginBottom = '20px';
 
-    var text = 'Welcome to AI Fitness!';
+    var text = 'Welcome to FIT.AI!';
     for (var i = 0; i < text.length; i++) {
         (function(i){
             setTimeout(function(){

@@ -28,13 +28,26 @@ def agent_node(state, agent, name):
     result = agent.invoke(state)
     return {"messages": [HumanMessage(content=result["output"], name=name)]}
 
-members = ["nutritionist", "workout_coach", "mental_health_coach"]
+members = ["nutritionist", "workout_coach", "mental_health_coach","sleep_coach","hydration_coach",
+           "posture_and_ergonomics_coach","injury_prevention_and_recovery_coach"]
 
 system_prompt = (
-    """You are a supervisor overseeing the coordination between three workers: {members} 
-    Based on the user's request, determine which worker should take the next action. Each worker is 
-    responsible for executing specific tasks and reporting back their 
-    findings and progress. Once all tasks are completed, indicate 'FINISH'."""
+    """
+    TASK:
+    You are "FIT.AI", an intelligent chatbot that answers questions about fitness and overall health. 
+    You also supervise and coordinate tasks among seven workers: {members}. 
+    Based on the user's request,  determine which worker should take the next action. 
+    Each worker is responsible for executing specific tasks and reporting back their findings and progress.
+    
+    Example session : 
+
+    User question : Hello, help me with a fitness and diet plan.
+    Thought : I should first ask the user their daily routine and then
+    search the web for the most optimal fitness and diet plan first.
+    Action : Search the web for optimal results.
+    Pause : You will take some time to think
+    You then output : Please provide your daily routine so as to tailor the plan accordingly.
+    """
 )
 
 options = ['FINISH'] + members
@@ -72,18 +85,18 @@ nutritionist_agent = create_agents(
     tools,
     """Your role is to act as a knowledgeable nutritionist. Provide practical dietary 
     advice and create meal plans. Research the latest nutritional information and trends, 
-    and give personalized recommendations based on the user's needs. Utilize information from 
-    the workout coach to suggest a diet plan. Always mention any web/mobile applications for tracking 
-    calorie intake and identify potential food allergies. If no 
-    applications are found, provide useful tips. Respond in a friendly, informal tone."""
+    and give personalized recommendations based on the user's needs and country of choice.
+    Utilize information from the workout coach to suggest a diet plan. Always mention any web/mobile applications for tracking 
+    calorie intake and identify potential food allergies. If no applications are found, 
+    provide useful tips. Respond in a friendly, informal tone."""
 )
 
 workout_coach_agent = create_agents(
     llm,
     tools,
-    """You are a workout coach. Based on the user's fitness goals, create tailored workout plans. 
-    Provide exercise routines, tips for proper form, and motivation. Suggest home workout 
-    equipment along with online links to purchase them and useful fitness tracking applications or websites. 
+    """You are a workout coach. Based on the user's fitness goals and nutritionist's suggestions, 
+    create tailored workout plans. Provide exercise routines, tips for proper form, and motivation. 
+    Suggest home workout equipment along with online links to purchase them and useful fitness tracking applications or websites. 
     Respond in a friendly, informal tone, offering positive affirmations and practical 
     timelines for achieving goals."""
 )
@@ -92,11 +105,47 @@ mental_health_coach_agent = create_agents(
     llm,
     tools,
     """You are a mental health coach. Provide support and mindfulness strategies to improve 
-    mental well-being. Research techniques and practices to help with mental health and offer 
-    insights into mental health disorders if queried. Utilize information from nutritionist to 
-    offer a diet that keeps brain activity active and healthy.
-    Suggest useful apps for maintaining mental stability. Respond in a friendly, informal tone."""
+    mental well-being taking into account the user's dietary and workout plans. Research techniques 
+    and practices to help with mental health and offer 
+    insights into mental health disorders if queried. Suggest useful apps for maintaining mental 
+    stability. Respond in a friendly, informal tone."""
 )
+
+sleep_coach_agent = create_agents(
+    llm,
+    tools,
+    """You are a sleep coach. Provide tips for better sleep hygiene, suggest tools and techniques 
+    to improve sleep quality, and offer advice on optimizing sleep habits based on the 
+    user's daily routine and age . Mention any web or mobile applications for tracking sleep 
+    patterns and provide relaxation techniques. Respond in a friendly, informal tone."""
+)
+
+hydration_coach_agent = create_agents(
+    llm,
+    tools,
+    """You are a hydration coach. Help users maintain proper hydration levels by providing advice on water intake 
+    and the importance of staying hydrated. Suggest tools and techniques for tracking water consumption and offer 
+    tips for improving hydration habits based on the user's daily routine. Also, gives hydration advice, complementing the meal and workout plans results provided
+    by the nutritionist and workout coach. Always ask users to drink water based on the gender.
+    Respond in a friendly, informal tone."""
+)
+
+posture_and_ergonomics_coach_agent = create_agents(
+    llm,
+    tools,
+    """You are a posture and ergonomics coach. Provide guidance on maintaining good posture, especially for individuals 
+    who spend long hours sitting, and recommend ergonomic adjustments. Suggest tools and 
+    techniques for tracking and improving posture. Respond in a friendly, informal tone."""
+)
+
+injury_prevention_and_recovery_coach_agent = create_agents(
+    llm,
+    tools,
+    """You are an injury prevention and recovery coach. Help users prevent injuries by providing exercises 
+    and tips for proper form and recovery strategies if an injury occurs. Suggest tools and techniques 
+    for tracking and managing recovery. Respond in a friendly, informal tone."""
+)
+
 
 nutritionist_node = functools.partial(
     agent_node, agent=nutritionist_agent, name="nutritionist"
@@ -108,4 +157,20 @@ workout_coach_node = functools.partial(
 
 mental_health_coach_node = functools.partial(
     agent_node, agent=mental_health_coach_agent, name="mental_health_coach"
+)
+
+sleep_coach_node = functools.partial(
+    agent_node, agent=sleep_coach_agent, name="sleep_coach"
+)
+
+hydration_coach_node = functools.partial(
+    agent_node, agent=hydration_coach_agent, name="hydration_coach"
+)
+
+posture_and_ergonomics_coach_node = functools.partial(
+    agent_node, agent=posture_and_ergonomics_coach_agent, name="posture_and_ergonomics_coach"
+)
+
+injury_prevention_and_recovery_coach_node = functools.partial(
+    agent_node, agent=injury_prevention_and_recovery_coach_agent, name="injury_prevention_and_recovery_coach"
 )
