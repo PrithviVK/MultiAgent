@@ -5,30 +5,57 @@ from tools import tools
 from agents import *
 from workflow import create_workflow
 
+# create the workflow graph
 graph = create_workflow()
 
-final_respone = graph.invoke({
-    "messages": [HumanMessage(content=
-                              """I want to improve my overall fitness. After research on the given user query
-                              Start with a meal plan from the nutritionist based, then get a workout routine from 
-                              the workout coach. Subsequently, get some mental health tips from the mental health coach
-                              based on the dietary and workout plans. Provide hydration tips to users complementing the 
-                              meal and workout plans. Finally, based on the workout plan provided by the workout coach suggest tips
-                              for avoiding and managing injuries during workouts
-                              Also,give me suggestions for a better and healtier lifestyle.
-                              Format the answer in well written manner.""")]
+# function to handle user input and run the workflow graph
+def run_graph(input_message, history):
+    try:
+        # relevant fitness-related keywords to handle irrelevant user prompts
+        relevant_keywords = [
+            "workout", "training", "exercise", "cardio", "strength training", "hiit (high-intensity interval training)",
+            "flexibility", "yoga", "pilates", "aerobics", "crossfit", "bodybuilding", "endurance", "running",
+            "cycling", "swimming", "martial arts", "stretching", "warm-up", "cool-down", 
+            "diet plan", "meal plan", "macronutrients", "micronutrients", "vitamins", "minerals", "protein",
+            "carbohydrates", "fats", "calories", "calorie", "daily", "nutrition", "supplements", "hydration", "weight loss",
+            "weight gain", "healthy eating","health", "fitness", "intermittent fasting", "keto diet", "vegan diet", "paleo diet",
+            "mediterranean diet", "gluten-free", "low-carb", "high-protein", "bmi", "calculate", "body mass index", 'calculator'
+            "mental health", "mindfulness", "meditation", "stress management", "anxiety relief", "depression",
+            "positive thinking", "motivation", "self-care", "relaxation", "sleep hygiene", "therapy",
+            "counseling", "cognitive-behavioral therapy (cbt)", "mood tracking", "mental", "emotional well-being",
+            "healthy lifestyle", "fitness goals", "health routines", "daily habits", "ergonomics",
+            "posture", "work-life balance", "workplace", "habit tracking", "goal setting", "personal growth",
+            "injury prevention", "recovery", "rehabilitation", "physical therapy", "sports injuries",
+            "pain management", "recovery techniques", "foam rolling", "stretching exercises",
+            "injury management", "injuries", "fitness apps", "health tracking", "wearable technology", "fitness equipment",
+            "home workouts", "gym routines", "outdoor activities", "sports", "wellness tips", "water", "adult", "adults"
+            "child", "children", "infant", "sleep", "habit", "habits", "routine", "loose", "weight", "fruits", "vegetables",
+            "chicken", "veg", "vegetarian", "non-veg", "non-vegetarian", "plant", "plant-based", "plant based", "fat", "resources",
+            "help", "cutting", "bulking", "link", "links", "website", "online", "websites", "peace", "mind", "equipments", "equipment",
+            "watch", "tracker", "fitness watch", "bands", "height"
+        ]
+        
+        greetings=["hello", "hi", "how are you"]
 
-}, {"recursion_limit": 150})
+        # check if the input message contains any relevant keywords
+        if any(keyword in input_message.lower() for keyword in relevant_keywords):
+            response = graph.invoke({
+                "messages": [HumanMessage(content=input_message)]
+            })
+            return response['messages'][1].content
+        
+        # handle greeting messages
+        elif any(keyword in input_message.lower() for keyword in greetings):
+            return "Hi there, I am FIT bot, your personal wellbeing coach."
+        
+        # default response for irrelevant topics
+        else:
+            return "I'm here to assist with fitness, nutrition, mental health, and related topics. Please ask questions related to these areas."
+    except Exception as e:
+        return f"An error occurred while processing your request: {e}"
 
-print(final_respone["messages"][1].content)
 
-def run_graph(input_message,history):
-    response = graph.invoke({
-        "messages": [HumanMessage(content=input_message)]
-    })
-    return response['messages'][1].content
-
-
+# setup Gradio interface
 bot = gr.Chatbot(render=False,placeholder="<strong>Your Personal Assistant</strong><br>Ask Me Anything",
                            show_copy_button=True,
                            layout="bubble",
@@ -55,5 +82,8 @@ demo = gr.ChatInterface(
               "Ergonomics in the workplace","Injuries Rehabilitation"],
     chatbot=bot,
 )
+
+# launch the Gradio application
+
 
 demo.launch()

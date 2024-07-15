@@ -12,25 +12,32 @@ import config
 
 os.environ["OPENAI_API_KEY"] = config.config("OPENAI_API_KEY")
 
+# initializing the GPT-4 Turbo model with no temperature variation
 llm = ChatOpenAI(temperature=0, model="gpt-4-turbo-preview")
 
 def create_agents(llm:ChatOpenAI, tools:list, system_prompt:str)->AgentExecutor:
+    # creating a chat prompt template
     prompt = ChatPromptTemplate.from_messages([
         ('system', system_prompt),
         MessagesPlaceholder(variable_name='messages'),
         MessagesPlaceholder(variable_name="agent_scratchpad")
     ])
+
+    # creating an agent with specified tools and prompting template
     agent = create_openai_tools_agent(llm, tools, prompt)
     executor = AgentExecutor(agent=agent, tools=tools)
     return executor
 
+# function to handle the agent invocation and return formatted state
 def agent_node(state, agent, name):
     result = agent.invoke(state)
     return {"messages": [HumanMessage(content=result["output"], name=name)]}
 
+# list of agents representing different coaching roles
 members = ["nutritionist", "workout_coach", "mental_health_coach","sleep_coach","hydration_coach",
            "posture_and_ergonomics_coach","injury_prevention_and_recovery_coach"]
 
+# system prompt explaining the FIT.AI role and its tasks
 system_prompt = (
     """
     TASK:
@@ -50,8 +57,10 @@ system_prompt = (
     """
 )
 
+# options for routing the next step in the flow
 options = ['FINISH'] + members
 
+# function definition for routing the tasks to agents
 function_def = {
     "name": "route",
     "description": "Select the next role.",
@@ -63,6 +72,7 @@ function_def = {
     }
 }
 
+# creating the supervisor chain using the specified LLM and function definitions
 prompt = ChatPromptTemplate.from_messages(
     [
         ("system", system_prompt),
@@ -80,6 +90,7 @@ supervisor_chain = (
     | JsonOutputFunctionsParser()
 )
 
+# creating agents for each coach role with specified prompts and tools
 nutritionist_agent = create_agents(
     llm,
     tools,
