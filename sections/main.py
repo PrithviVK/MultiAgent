@@ -32,7 +32,7 @@ def run_graph(input_message, history):
             "child", "children", "infant", "sleep", "habit", "habits", "routine", "loose", "weight", "fruits", "vegetables",
             "chicken", "veg", "vegetarian", "non-veg", "non-vegetarian", "plant", "plant-based", "plant based", "fat", "resources",
             "help", "cutting", "bulking", "link", "links", "website", "online", "websites", "peace", "mind", "equipments", "equipment",
-            "watch", "tracker", "watch", "band", "height", "injured", "quick", "remedy", "solution", "solutions", "pain"
+            "watch", "tracker", "watch", "band", "height", "injured", "quick", "remedy", "solution", "solutions", "pain", "male", "female"
         ]
         
         greetings=["hello", "hi", "how are you"]
@@ -48,12 +48,12 @@ def run_graph(input_message, history):
         elif any(keyword in input_message.lower() for keyword in greetings):
             return "Hi there, I am FIT bot, your personal wellbeing coach."
         
-        # default response for irrelevant topics
+        # # default response for irrelevant topics
         else:
             return "I'm here to assist with fitness, nutrition, mental health, and related topics. Please ask questions related to these areas."
+    
     except Exception as e:
-        return f"An error occurred while processing your request: {e}"
-
+        return f"An error occurred: {str(e)}"
 
 # setup Gradio interface
 bot = gr.Chatbot(render=False,placeholder="<strong>Your Personal Assistant</strong><br>Ask Me Anything",
@@ -83,11 +83,7 @@ demo = gr.ChatInterface(
     chatbot=bot,
 )
 
-# def update_message(request: gr.Request):
-#     return f"Welcome, {request.username}"
-
-
 # launch the Gradio application
 
 # always use the below given username and password for logging into the web application
-demo.launch(auth=("admin", "pass1234"),auth_message="You have succesfully logged in.")
+demo.launch(auth=("admin", "pass1234"),auth_message="Please enter your credentials.")

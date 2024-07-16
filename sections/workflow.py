@@ -25,7 +25,6 @@ def create_workflow():
     for member in members:
         workflow.add_edge(start_key=member, end_key="supervisor")
 
-    # members = ["nutritionist", "workout_coach", "mental_health_coach"]
     conditional_map = {k: k for k in members}
     conditional_map["FINISH"] = END
 

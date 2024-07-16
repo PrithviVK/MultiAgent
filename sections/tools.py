@@ -15,7 +15,7 @@ def process_search_tool(url: str) -> str:
         soup = BeautifulSoup(response.content, "html.parser")
         return soup.get_text()
     except requests.exceptions.RequestException as e:
-        return f"Error processing the URL: {e}"
+        return f"Error processing the URL: {str(e)}"
 
 # tool for internet searches
 @tool("internet_search_tool", return_direct=False)
@@ -25,6 +25,6 @@ def internet_search_tool(query: str) -> str:
         response = tavily_client.qna_search(query=query, max_results=5)
         return response if response else "No results found"
     except requests.exceptions.HTTPError as e:
-        return f"HTTP Error: {e}"
+        return f"HTTP Error: {str(e)}"
 
 tools = [internet_search_tool, process_search_tool]
