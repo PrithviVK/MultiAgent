@@ -76,3 +76,26 @@ os.environ["TAVILY_API_KEY"] = config("TAVILY_API_KEY")
 
 After following the above mentioned steps run the code on your terminal.<br>
 `poetry run python3 main.py`
+
+On running the website, type in the username and password.<br>
+A User Interface as shown below would appear.<br><br>
+<img width="468" alt="image" src="https://github.com/user-attachments/assets/fb36f1dc-8670-4a69-8fb4-4199a0e6ef77">
+
+You can then provide custom inputs in the text field and hit either the `enter key` or click on `Submit button`.<br>
+You can also perform one of the following operations:
+- Send a `Retry` request to the same query.
+- Send a `Delete` request to delete the previous chat.
+- Send a `Clear` request to clear all contents on the screen.
+
+To guide users on utilising the multiagent application, few example prompts have been provided below the text field for submitting relevant queries.<br>
+Minor features include:<br>
+- **Copy to Clipboard** to copy and paste the output response.<br>
+- **Like/Dislike** the response.<br>
+
+***Good luck on your fitness journey!***
+
+
+
+
+
+
