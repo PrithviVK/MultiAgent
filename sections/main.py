@@ -17,7 +17,7 @@ def run_graph(input_message, history):
             "flexibility", "yoga", "pilates", "aerobics", "crossfit", "bodybuilding", "endurance", "running",
             "cycling", "swimming", "martial arts", "stretching", "warm-up", "cool-down", 
             "diet plan", "meal plan", "macronutrients", "micronutrients", "vitamins", "minerals", "protein",
-            "carbohydrates", "fats", "calories", "calorie", "daily", "nutrition", "supplements", "hydration", "weight loss",
+            "carbohydrates", "fats", "calories", "calorie", "daily", "nutrition", "supplements", "hydration", "weightloss",
             "weight gain", "healthy eating","health", "fitness", "intermittent fasting", "keto diet", "vegan diet", "paleo diet",
             "mediterranean diet", "gluten-free", "low-carb", "high-protein", "bmi", "calculate", "body mass index", 'calculator'
             "mental health", "mindfulness", "meditation", "stress management", "anxiety relief", "depression",
@@ -27,12 +27,12 @@ def run_graph(input_message, history):
             "posture", "work-life balance", "workplace", "habit tracking", "goal setting", "personal growth",
             "injury prevention", "recovery", "rehabilitation", "physical therapy", "sports injuries",
             "pain management", "recovery techniques", "foam rolling", "stretching exercises",
-            "injury management", "injuries", "fitness apps", "health tracking", "wearable technology", "fitness equipment",
+            "injury management", "injuries", "apps", "health tracking", "wearable technology", "equipment",
             "home workouts", "gym routines", "outdoor activities", "sports", "wellness tips", "water", "adult", "adults"
             "child", "children", "infant", "sleep", "habit", "habits", "routine", "loose", "weight", "fruits", "vegetables",
             "chicken", "veg", "vegetarian", "non-veg", "non-vegetarian", "plant", "plant-based", "plant based", "fat", "resources",
             "help", "cutting", "bulking", "link", "links", "website", "online", "websites", "peace", "mind", "equipments", "equipment",
-            "watch", "tracker", "fitness watch", "bands", "height"
+            "watch", "tracker", "watch", "band", "height", "injured", "quick", "remedy", "solution", "solutions", "pain"
         ]
         
         greetings=["hello", "hi", "how are you"]
@@ -83,7 +83,11 @@ demo = gr.ChatInterface(
     chatbot=bot,
 )
 
+# def update_message(request: gr.Request):
+#     return f"Welcome, {request.username}"
+
+
 # launch the Gradio application
 
-
-demo.launch()
+# always use the below given username and password for logging into the web application
+demo.launch(auth=("admin", "pass1234"),auth_message="You have succesfully logged in.")
