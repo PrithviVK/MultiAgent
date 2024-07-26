@@ -2,6 +2,10 @@
 FIT.AI is an intelligent multi-agent fitness application backed by the most popular framework, __LangGraph__ utilizing the most popular Large Language Model, 
 __gpt-4-turbo-preview__ and a search engine optimized for LLM’s and RAG(Retrieval Augmented Generation), __Tavily API__.
 
+
+**[Check out the live application here!](https://huggingface.co/spaces/prithvi26/fitness_multiagent)**
+
+
 ## Features
 1. Crafting diet plans based on user information such as age, gender, height, weight.
 2. Crafting workout plans based on user information such as age, gender, height, weight.
